@@ -13,7 +13,10 @@ namespace DAL
     public class CompraDAO : Conexao
     {
 
-        
+        public void DesativarCompra(Modelo.Compra compra)
+        {
+
+        }
         public List<Modelo.Compra> TodasCompras(int id =0)
         {
             try

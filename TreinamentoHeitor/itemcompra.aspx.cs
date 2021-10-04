@@ -74,16 +74,59 @@ namespace TreinamentoHeitor
                 listacompra = controlecompra.SelectTodasCompras(codigo);
                 RepetidorCentral.DataSource = listacompra;
                 RepetidorCentral.DataBind();
-                Modelo.Compra modelocompra = new Modelo.Compra();
-                modelocompra = listacompra.ElementAt(0);
-                telacompra.DataSource = modelocompra.AuxItems;
-                telacompra.DataBind();
             }
             catch (Exception)
             {
                 throw;
             }
 
+        }
+
+        protected void BtnSalvar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Modelo.Compra compra = new Modelo.Compra();
+                compra.CodCliente = int.Parse(ddlTest.SelectedValue);
+                List<Modelo.ItemCompra> comprasRealizadas = ObterDados();
+                compra.ValorTotal = comprasRealizadas.Select(x => x.auxValorTotal).Sum();
+                compra.AuxItems = comprasRealizadas;
+
+                Controle.CompraControle compracontrole = new Controle.CompraControle();
+                compracontrole.SalvarCompra(compra);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private List<Modelo.ItemCompra> ObterDados()
+        {
+            try
+            {
+                List<Modelo.ItemCompra> listaVerificacao = new List<Modelo.ItemCompra>();
+                foreach (RepeaterItem item in RepetidorCentral.Items)
+                {
+                    Repeater subrepeater = (Repeater)item.FindControl("RepetidorItems");
+                    foreach (RepeaterItem subitem in subrepeater.Items)
+                    {
+                        Modelo.ItemCompra linha = new Modelo.ItemCompra();
+                        Label labelCodigo = (Label)subitem.FindControl("lbCodigo");
+                        linha.Codigo = int.Parse(labelCodigo.Text);
+                        linha.codProduto = int.Parse(((Label)subitem.FindControl("lbcodProduto")).Text);
+                        linha.auxDescricao = ((Label)subitem.FindControl("lblauxDescricao")).Text;
+                        linha.auxValor = decimal.Parse(((Label)subitem.FindControl("lblauxValor")).Text);
+                        linha.Quantidade = int.Parse(((TextBox)subitem.FindControl("lblQuantidade")).Text);
+                        listaVerificacao.Add(linha);
+                    }
+                }
+                return listaVerificacao;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         protected void BtnAddProduto_Click(object sender, EventArgs e)
@@ -95,34 +138,16 @@ namespace TreinamentoHeitor
                 subItem.auxDescricao = listProduto.SelectedItem.Text;
                 subItem.auxValor = ValorProduto(int.Parse(listProduto.SelectedValue));
                 subItem.Quantidade = int.Parse(txtqtdproduto.Text);
-                List<Modelo.ItemCompra> listaItemComprados = LerDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
+                List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
                 listaItemComprados.Add(subItem);
-                telacompra.DataSource = listaItemComprados;
-                telacompra.DataBind();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
 
-        private List<Modelo.ItemCompra> LerDados()
-        {
-            try
-            {
-                List<Modelo.ItemCompra> listaVerificacao = new List<Modelo.ItemCompra>();
-                foreach (RepeaterItem item in telacompra.Items)
-                {
-                    Modelo.ItemCompra linha = new Modelo.ItemCompra();
-                    Label labelCodigo = (Label)item.FindControl("lbCodigo");
-                    linha.Codigo = int.Parse(labelCodigo.Text);
-                    linha.codProduto = int.Parse(((Label)item.FindControl("lbcodProduto")).Text);
-                    linha.auxDescricao = ((Label)item.FindControl("lblauxDescricao")).Text;
-                    linha.auxValor = decimal.Parse(((Label)item.FindControl("lblauxValor")).Text);
-                    linha.Quantidade = int.Parse(((Label)item.FindControl("lblQuantidade")).Text);
-                    listaVerificacao.Add(linha);
-                }
-                return listaVerificacao;
+                List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
+                Modelo.Compra modelocompra = new Modelo.Compra();
+                modelocompra.AuxItems = listaItemComprados;
+                listacompra.Add(modelocompra);
+                RepetidorCentral.DataSource = listacompra;
+                RepetidorCentral.DataBind();
+
             }
             catch (Exception)
             {
@@ -147,24 +172,7 @@ namespace TreinamentoHeitor
                 throw;
             }
         }
-        protected void BtnSalvar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Modelo.Compra compra = new Modelo.Compra();
-                compra.CodCliente = int.Parse(ddlTest.SelectedValue);
-                List<Modelo.ItemCompra> comprasRealizadas = LerDados();
-                compra.ValorTotal = comprasRealizadas.Select(x => x.auxValorTotal).Sum();
-                compra.AuxItems = comprasRealizadas;
 
-                Controle.CompraControle compracontrole = new Controle.CompraControle();
-                compracontrole.SalvarCompra(compra);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
         protected void RepetidorItems_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             //throw Exce

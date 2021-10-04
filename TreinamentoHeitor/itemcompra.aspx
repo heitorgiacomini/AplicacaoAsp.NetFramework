@@ -90,10 +90,13 @@
                                     <asp:Label ID="lblauxDescricao" runat="server" Text='<%# Eval("auxDescricao")  %>'></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:Label ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:Label>
+                                    <asp:Label ID="lblauxValor" runat="server" Text='<%# Eval("auxValor")  %>'></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="lblauxValorTotal" runat="server" Text='<%# Eval("auxValorTotal")  %>' />
+                                    <asp:TextBox ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:TextBox>
+                                </td>
+                                <td>
+                                    <asp:Label ID="lblauxValorTotal" runat="server" Text='<%# Eval("auxValorTotal")  %>' />
                                 </td>
                                 <td>
                                     <asp:LinkButton ID="Editar" runat="server" CommandName="Editar" CommandArgument='<%# Eval("Codigo")  %>'>X</asp:LinkButton>
@@ -104,7 +107,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4">Valor Total</td>
+                        <td colspan="5">Valor Total</td>
                         <td>
                             <asp:Label ID="lblValorTotal" runat="server" Text='<%# Eval("ValorTotal")  %>'></asp:Label>
                         </td>
@@ -151,6 +154,9 @@
                                     <asp:Label ID="lblauxDescricao" runat="server" Text='<%# Eval("auxDescricao")  %>'></asp:Label>
                                 </td>
                                 <td>
+                                    <asp:Label ID="auxValor" runat="server" Text='<%# Eval("auxValor")  %>'></asp:Label>
+                                </td>
+                                <td>
                                     <asp:Label ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:Label>
                                 </td>
                                 <td>
@@ -162,7 +168,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4">Valor Total</td>
+                        <td colspan="5">Valor Total</td>
                         <td>
                             <asp:Label ID="lblValorTotal" runat="server" Text='<%# Eval("ValorTotal")  %>'></asp:Label>
                         </td>
