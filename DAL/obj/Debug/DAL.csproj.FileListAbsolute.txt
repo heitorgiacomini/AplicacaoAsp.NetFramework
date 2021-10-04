@@ -1,0 +1,9 @@
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\bin\Debug\DAL.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\bin\Debug\DAL.pdb
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\bin\Debug\Modelo.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\bin\Debug\Modelo.pdb
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\obj\Debug\DAL.csprojAssemblyReference.cache
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\obj\Debug\DAL.csproj.CopyComplete
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\obj\Debug\DAL.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\DAL\obj\Debug\DAL.pdb

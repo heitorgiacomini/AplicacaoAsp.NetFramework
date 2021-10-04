@@ -1,0 +1,42 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ContainerPrincipal.master.cs" Inherits="TreinamentoHeitor.Template.ContainerPrincipal" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Treinamento Heitor</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<style>
+    .container {
+        margin: auto;
+        width: 60%;
+        border: 3px solid #73AD21;
+        padding: 10px;
+    }
+</style>
+<body>
+    <div class="container">
+
+        <table border="1">
+            <tr>
+                <td><a href="cliente.aspx">Cadastrar Cliente</a></td>
+                <td><a href="produto.aspx">Cadastrar Produto</a></td>
+                <td><a href="itemcompra.aspx">Cadastrar Compra</a></td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <form id="form1" runat="server">
+            <div>
+                <h1><%=Page.Title %></h1>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

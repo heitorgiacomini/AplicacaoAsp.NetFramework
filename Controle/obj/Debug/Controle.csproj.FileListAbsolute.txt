@@ -1,0 +1,11 @@
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\bin\Debug\Controle.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\bin\Debug\Controle.pdb
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\bin\Debug\DAL.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\bin\Debug\Modelo.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\bin\Debug\DAL.pdb
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\bin\Debug\Modelo.pdb
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\obj\Debug\Controle.csprojAssemblyReference.cache
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\obj\Debug\Controle.csproj.CoreCompileInputs.cache
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\obj\Debug\Controle.csproj.CopyComplete
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\obj\Debug\Controle.dll
+C:\Users\02471\source\repos\TreinamentoHeitor\Controle\obj\Debug\Controle.pdb
