@@ -13,9 +13,18 @@ namespace DAL
     public class CompraDAO : Conexao
     {
 
-        public void DesativarCompra(Modelo.Compra compra)
+        public void DesativarCompra(Modelo.Compra modelocompra)
         {
-
+            try{
+                SqlCommand comando = CriarComando("DesativarCompra", System.Data.CommandType.StoredProcedure);
+                comando.Parameters.AddWithValue("@CodCompra", modelocompra.Codigo);
+                comando.ExecuteNonQuery();
+                comando.Connection.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         public List<Modelo.Compra> TodasCompras(int id =0)
         {
@@ -46,6 +55,7 @@ namespace DAL
                         {
                             Modelo.ItemCompra m = new Modelo.ItemCompra();
                             m.codCompra = (int)reader["CodCompra"];
+                            m.guid = Guid.NewGuid().ToString();
                             m.Codigo = (int)reader["Codigo"];  //codigo do item    
                             m.codProduto = (int)reader["codProduto"];
                             m.auxDescricao = (string)reader["Descricao"];

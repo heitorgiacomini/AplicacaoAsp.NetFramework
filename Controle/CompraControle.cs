@@ -38,6 +38,19 @@ namespace Controle
                 throw;
             }
         }
+        public void DesabilitarCompra(Modelo.Compra modelocompra)
+        {
+            try
+            {
+                DAL.CompraDAO daocompra = new DAL.CompraDAO();
+                daocompra.DesativarCompra(modelocompra);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

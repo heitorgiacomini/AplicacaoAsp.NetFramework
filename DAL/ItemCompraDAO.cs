@@ -10,38 +10,35 @@ namespace DAL
 {
     public class ItemCompraDAO : Conexao
     {
-        //public List<Modelo.ItemCompra> SelectItems()
-        //{
-        //    try
-        //    {
-        //        //List<Modelo.Compra> listaretorno = new List<Modelo.Compra>();
+        public void DesativarItemsPeloCodigodaCompra(ItemCompra modelitem)
+        {
+            try
+            {
+                SqlCommand comando = CriarComando("UPDATE ItemCompra SET Excluido = 1 , DataExclusao= getDate() Where codCompra = @Codigo");
+                comando.Parameters.AddWithValue("@Codigo", modelitem.codCompra);
+                comando.ExecuteNonQuery();
+                comando.Connection.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-        //        List<Modelo.ItemCompra> listaretorno = new List<Modelo.ItemCompra>();
-        //        SqlCommand comando = CriarComando("Select * From ItemCompra Where Excluido = 0");
-        //        using (SqlDataReader reader = comando.ExecuteReader())
-        //        {
-        //            while (reader.Read())
-        //            {
-        //                Modelo.ItemCompra c = new Modelo.ItemCompra();
-        //                c.Codigo = (int)reader["Codigo"];
-        //                c.codProduto = (int)reader["codProduto"];
-        //                c.codCompra = (int)reader["codCompra"];
-        //                c.Quantidade = (int)reader["Quantidade"];
-        //                (DateTime)reader["DataCriacao"]; 
-        //                c.Descricao = (string)reader["Descricao"];
-        //                c.ValorUnitario = (decimal)reader["ValorUnitario"];
-        //                listaretorno.Add(c);
-        //            }
-        //        }
-        //        comando.Connection.Close();
-        //        return listaretorno;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-        
+        public void DesativarItem(ItemCompra modelitem)
+        {
+            try
+            {
+                SqlCommand comando = CriarComando("UPDATE ItemCompra SET Excluido = 1 , DataExclusao= getDate() Where codCompra = @Codigo");
+                comando.Parameters.AddWithValue("@Codigo", modelitem.Codigo);
+                comando.ExecuteNonQuery();
+                comando.Connection.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public void SalvarItem(Modelo.ItemCompra item)
         {
             try
@@ -90,3 +87,36 @@ namespace DAL
         }
     }
 }
+
+
+        //public List<Modelo.ItemCompra> SelectItems()
+        //{
+        //    try
+        //    {
+        //        //List<Modelo.Compra> listaretorno = new List<Modelo.Compra>();
+
+        //        List<Modelo.ItemCompra> listaretorno = new List<Modelo.ItemCompra>();
+        //        SqlCommand comando = CriarComando("Select * From ItemCompra Where Excluido = 0");
+        //        using (SqlDataReader reader = comando.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                Modelo.ItemCompra c = new Modelo.ItemCompra();
+        //                c.Codigo = (int)reader["Codigo"];
+        //                c.codProduto = (int)reader["codProduto"];
+        //                c.codCompra = (int)reader["codCompra"];
+        //                c.Quantidade = (int)reader["Quantidade"];
+        //                (DateTime)reader["DataCriacao"]; 
+        //                c.Descricao = (string)reader["Descricao"];
+        //                c.ValorUnitario = (decimal)reader["ValorUnitario"];
+        //                listaretorno.Add(c);
+        //            }
+        //        }
+        //        comando.Connection.Close();
+        //        return listaretorno;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}

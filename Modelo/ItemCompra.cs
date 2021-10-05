@@ -17,6 +17,6 @@ namespace Modelo
         public string auxDescricao { get; set; }
         public decimal auxValor { get; set; }
         public decimal auxValorTotal { get { return Quantidade * auxValor; } }
-
+        public string guid { get; set; }
     }
 }

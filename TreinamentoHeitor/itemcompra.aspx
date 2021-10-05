@@ -13,49 +13,8 @@
     <asp:Label Text="Quantidade:" runat="server" />
     <asp:TextBox runat="server" ID="txtqtdproduto" />
     <asp:Button Text="Adicionar" runat="server" ID="btnAddProduto" OnClick="BtnAddProduto_Click" />
-    <hr>
-    <table border="1">
-        <thead>
-            <tr>
-                <td>Codigo do Item</td>
-                <td>codProduto</td>
-                <td>auxDescricao</td>
-                <td>auxValor</td>
-                <td>Quantidade</td>
-                <td>SubTotal</td>
-                <td>Excluir</td>
-            </tr>
-        </thead>
-        <tbody>
-            <asp:Repeater runat="server" ID="telacompra">
-                <ItemTemplate>
-                    <tr>
-                        <td>
-                            <asp:Label ID="lbCodigo" runat="server" Text='<%# Eval("Codigo")  %>'></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Label ID="lbcodProduto" runat="server" Text='<%# Eval("codProduto")  %>'></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblauxDescricao" runat="server" Text='<%# Eval("auxDescricao")  %>'></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblauxValor" runat="server" Text='<%# Eval("auxValor")  %>'></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblauxValorTotal" runat="server" Text='<%# Eval("auxValorTotal")  %>'></asp:Label>
-                        </td>
-                        <td>
-                            <asp:Button Text="X" runat="server" />
-                        </td>
-                    </tr>
-                </ItemTemplate>
-            </asp:Repeater>
-        </tbody>
-    </table>
+ 
+
     <hr>
     <asp:Repeater runat="server" ID="RepetidorCentral" OnItemDataBound="RepetidorTabela_ItemDataBound">
         <ItemTemplate>
@@ -68,6 +27,7 @@
                 <thead>
                     <tr>
                         <td>Codigo do Item</td>
+                        <td>guid</td>
                         <td>codProduto</td>
                         <td>auxDescricao</td>
                         <td>auxValor</td>
@@ -82,6 +42,9 @@
                             <tr>
                                 <td>
                                     <asp:Label ID="lbCodigo" runat="server" Text='<%# Eval("Codigo")  %>'></asp:Label>
+                                 </td>
+                                <td>
+                                    <asp:Label ID="lbguid" runat="server" Text='<%# Eval("guid")  %>'></asp:Label>
                                 </td>
                                 <td>
                                     <asp:Label ID="lbcodProduto" runat="server" Text='<%# Eval("codProduto")  %>'></asp:Label>
@@ -99,7 +62,7 @@
                                     <asp:Label ID="lblauxValorTotal" runat="server" Text='<%# Eval("auxValorTotal")  %>' />
                                 </td>
                                 <td>
-                                    <asp:LinkButton ID="Editar" runat="server" CommandName="Editar" CommandArgument='<%# Eval("Codigo")  %>'>X</asp:LinkButton>
+                                    <asp:LinkButton ID="Editar" runat="server" CommandName="Editar" CommandArgument='<%#Eval("guid")  %>' >X</asp:LinkButton>
                                 </td>
                             </tr>
                         </ItemTemplate>
@@ -128,7 +91,7 @@
             <asp:Label ID="lblNomeCliente" runat="server" Text='<%# Eval("NomeCliente")  %>'></asp:Label>
             <asp:Label ID="lblDataCompra" runat="server" Text='<%# Eval("DataCompra")  %>'></asp:Label>
             <asp:LinkButton ID="Editar" runat="server" CommandName="Editar" CommandArgument='<%# Eval("Codigo")  %>'>Editar</asp:LinkButton>
-
+            <asp:LinkButton ID="Desabilitar" runat="server" CommandName="Desabilitar" CommandArgument='<%# Eval("Codigo")  %>'>Desabilitar</asp:LinkButton>
             <table border="1">
                 <thead>
                     <tr>

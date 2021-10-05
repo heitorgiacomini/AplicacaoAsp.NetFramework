@@ -9,6 +9,30 @@ namespace Controle
 {
     public class ItemCompraControle
     {
+        public void Desabilitaritem(Modelo.ItemCompra modelitem)
+        {
+            try
+            {
+                DAL.ItemCompraDAO itemdao = new DAL.ItemCompraDAO();
+                itemdao.DesativarItem(modelitem);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public void DesabilitarItemsPeloCodigoCompra(Modelo.ItemCompra modelitem)
+        {
+            try
+            {
+                DAL.ItemCompraDAO itemdao = new DAL.ItemCompraDAO();
+                itemdao.DesativarItemsPeloCodigodaCompra(modelitem);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public void SalvarCompra(Modelo.Compra itemcompra)
         {
             try

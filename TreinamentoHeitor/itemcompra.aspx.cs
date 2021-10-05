@@ -42,7 +42,6 @@ namespace TreinamentoHeitor
                 listacompra = controlecompra.SelectTodasCompras();
                 RepetidorTabela.DataSource = listacompra;
                 RepetidorTabela.DataBind();
-
             }
             catch (Exception)
             {
@@ -68,12 +67,24 @@ namespace TreinamentoHeitor
         {
             try
             {
-                List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
-                Controle.CompraControle controlecompra = new Controle.CompraControle();
-                int codigo = int.Parse(e.CommandArgument.ToString());
-                listacompra = controlecompra.SelectTodasCompras(codigo);
-                RepetidorCentral.DataSource = listacompra;
-                RepetidorCentral.DataBind();
+                if (e.CommandName.ToString() == "Editar")
+                {
+                    List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
+                    Controle.CompraControle controlecompra = new Controle.CompraControle();
+                    int codigo = int.Parse(e.CommandArgument.ToString());
+                    listacompra = controlecompra.SelectTodasCompras(codigo);
+                    RepetidorCentral.DataSource = listacompra;
+                    RepetidorCentral.DataBind();
+                }
+                else if (e.CommandName.ToString() == "Desabilitar")
+                {                    
+                    Controle.CompraControle controlecompra = new Controle.CompraControle();
+                    int codigo = int.Parse(e.CommandArgument.ToString());
+                    Modelo.Compra comprix = new Modelo.Compra();
+                    comprix.Codigo = codigo;
+                    controlecompra.DesabilitarCompra(comprix);   
+                }
+
             }
             catch (Exception)
             {
@@ -117,6 +128,7 @@ namespace TreinamentoHeitor
                         linha.codProduto = int.Parse(((Label)subitem.FindControl("lbcodProduto")).Text);
                         linha.auxDescricao = ((Label)subitem.FindControl("lblauxDescricao")).Text;
                         linha.auxValor = decimal.Parse(((Label)subitem.FindControl("lblauxValor")).Text);
+                        linha.guid = ((Label)subitem.FindControl("lbguid")).Text;
                         linha.Quantidade = int.Parse(((TextBox)subitem.FindControl("lblQuantidade")).Text);
                         listaVerificacao.Add(linha);
                     }
@@ -138,6 +150,7 @@ namespace TreinamentoHeitor
                 subItem.auxDescricao = listProduto.SelectedItem.Text;
                 subItem.auxValor = ValorProduto(int.Parse(listProduto.SelectedValue));
                 subItem.Quantidade = int.Parse(txtqtdproduto.Text);
+                subItem.guid = Guid.NewGuid().ToString();
                 List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
                 listaItemComprados.Add(subItem);
 
@@ -175,8 +188,30 @@ namespace TreinamentoHeitor
 
         protected void RepetidorItems_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            //throw Exce
+            try
+            {
 
+                //e.CommandArgument.ToString()
+                List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
+                Modelo.ItemCompra subItem = new Modelo.ItemCompra();
+                //listaItemComprados.Add(subItem);
+                string guidproduto = e.CommandArgument.ToString();
+                subItem = listaItemComprados.Where(x => x.guid == guidproduto).FirstOrDefault();
+                listaItemComprados.Remove(subItem);
+
+                List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
+                Modelo.Compra modelocompra = new Modelo.Compra();
+                modelocompra.AuxItems = listaItemComprados;
+                listacompra.Add(modelocompra);
+                RepetidorCentral.DataSource = listacompra;
+                RepetidorCentral.DataBind();
+
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
