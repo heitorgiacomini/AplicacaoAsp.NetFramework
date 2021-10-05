@@ -104,6 +104,11 @@ namespace TreinamentoHeitor
                 compra.AuxItems = comprasRealizadas;
 
                 Controle.CompraControle compracontrole = new Controle.CompraControle();
+
+                foreach (RepeaterItem item in RepetidorCentral.Items)
+                {
+                    compra.Codigo = int.Parse(((Label)item.FindControl("lblCodigo")).Text);
+                }
                 compracontrole.SalvarCompra(compra);
             }
             catch (Exception)

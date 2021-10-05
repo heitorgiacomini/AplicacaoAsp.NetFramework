@@ -13,12 +13,19 @@ namespace Controle
             try
             {
                 DAL.CompraDAO compradao = new DAL.CompraDAO();
-                int codigocompra = compradao.Salvar(modelocompra);
-                if (codigocompra != 0) //se a insercao anterior deu certo
-                {
-                    Controle.ItemCompraControle item = new Controle.ItemCompraControle();
-                    item.SalvarObjetoCompra(modelocompra, codigocompra);
+                if (modelocompra.Codigo == 0) {
+                    compradao.SalvarTudo(modelocompra);
                 }
+                else {
+                    
+                }
+
+                //int codigocompra = compradao.Salvar(modelocompra);
+                //if (codigocompra != 0) //se a insercao anterior deu certo
+                //{
+                //    Controle.ItemCompraControle item = new Controle.ItemCompraControle();
+                //    item.SalvarObjetoCompra(modelocompra, codigocompra);
+                //}
             }
             catch (Exception)
             {

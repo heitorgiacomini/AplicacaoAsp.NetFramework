@@ -33,19 +33,6 @@ namespace Controle
                 throw;
             }
         }
-        public void SalvarCompra(Modelo.Compra itemcompra)
-        {
-            try
-            {
-                DAL.CompraDAO daocompra = new DAL.CompraDAO();
-                daocompra.Salvar(itemcompra);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-        }
         public void SalvarObjetoCompra(Modelo.Compra modelocompra, int codigo)
         {
             try

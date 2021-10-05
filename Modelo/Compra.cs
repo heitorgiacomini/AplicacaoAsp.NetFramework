@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Modelo
 {
     public class Compra
-    {
+    { //tipo int fica 0 quando nao inicializado
         public int Codigo { get; set; }
         public string NomeCliente{ get; set; }
         public int CodCliente { get; set; }
