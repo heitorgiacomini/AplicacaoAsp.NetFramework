@@ -12,9 +12,7 @@
     </asp:DropDownList>
     <asp:Label Text="Quantidade:" runat="server" />
     <asp:TextBox runat="server" ID="txtqtdproduto" />
-    <asp:Button Text="Adicionar" runat="server" ID="btnAddProduto" OnClick="BtnAddProduto_Click" />
- 
-
+    <asp:Button Text="Adicionar" runat="server" ID="btnAddProduto" OnClick="BtnAddProduto_Click" /> 
     <hr>
     <asp:Repeater runat="server" ID="RepetidorCentral" OnItemDataBound="RepetidorTabela_ItemDataBound">
         <ItemTemplate>

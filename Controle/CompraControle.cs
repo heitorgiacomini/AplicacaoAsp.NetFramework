@@ -17,7 +17,7 @@ namespace Controle
                     compradao.SalvarTudo(modelocompra);
                 }
                 else {
-                    
+                    compradao.AtualizarCompra(modelocompra);
                 }
 
                 //int codigocompra = compradao.Salvar(modelocompra);

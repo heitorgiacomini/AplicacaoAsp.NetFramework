@@ -26,6 +26,8 @@ namespace DAL
                 throw;
             }
         }
+
+
         public List<Modelo.Compra> TodasCompras(int id =0)
         {
             try
@@ -120,7 +122,54 @@ namespace DAL
                 throw;
             }
         }
+        public void AtualizarCompra(Compra modelocompra)
+        {
+            try
+            {
+                SqlCommand comando = CriarComando("AtualizarCompra", System.Data.CommandType.StoredProcedure);
+                comando.Parameters.AddWithValue("@CodCompra", modelocompra.Codigo);
+                comando.Parameters.AddWithValue("@CodCliente", modelocompra.CodCliente);
+                DataTable tabela = PreencherDataTableUpdate(modelocompra.AuxItems);
+                SqlParameter parametro = new SqlParameter();
+                parametro.Value = tabela;
+                parametro.SqlDbType = SqlDbType.Structured;
+                parametro.ParameterName = "meusitensdacompra";
+                comando.Parameters.Add(parametro);
 
+                comando.ExecuteNonQuery();
+                comando.Connection.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private DataTable PreencherDataTableUpdate(List<Modelo.ItemCompra> auxItems) {
+            try
+            {
+
+                DataTable tabela = new DataTable();
+                tabela.Columns.Add("codItem");
+                tabela.Columns.Add("codCompra");
+                tabela.Columns.Add("codProduto");
+                tabela.Columns.Add("Quantidade");
+                foreach (Modelo.ItemCompra item in auxItems)
+                {
+                    DataRow linha = tabela.NewRow();
+                    linha["codItem"] = item.Codigo;
+                    linha["codCompra"] = item.codCompra;
+                    linha["codProduto"] = item.codProduto;
+                    linha["Quantidade"] = item.Quantidade;
+                    tabela.Rows.Add(linha);
+                }
+                return tabela;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         private DataTable PreencherDataTable(List<Modelo.ItemCompra> auxItems)
         {
             try

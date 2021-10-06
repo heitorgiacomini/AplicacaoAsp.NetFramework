@@ -195,7 +195,6 @@ namespace TreinamentoHeitor
         {
             try
             {
-
                 //e.CommandArgument.ToString()
                 List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
                 Modelo.ItemCompra subItem = new Modelo.ItemCompra();
@@ -204,14 +203,22 @@ namespace TreinamentoHeitor
                 subItem = listaItemComprados.Where(x => x.guid == guidproduto).FirstOrDefault();
                 listaItemComprados.Remove(subItem);
 
-                List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
                 Modelo.Compra modelocompra = new Modelo.Compra();
+                foreach (RepeaterItem item in RepetidorCentral.Items)
+                {
+                    Label labelCodigo = (Label)item.FindControl("lblCodigo");
+                    modelocompra.Codigo = int.Parse(labelCodigo.Text);
+                    modelocompra.NomeCliente = ((Label)item.FindControl("lblNomeCliente")).Text;
+                    modelocompra.DataCompra = DateTime.Parse(((Label)item.FindControl("lblDataCompra")).Text);
+                }
+
+
+
+                List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
                 modelocompra.AuxItems = listaItemComprados;
                 listacompra.Add(modelocompra);
                 RepetidorCentral.DataSource = listacompra;
                 RepetidorCentral.DataBind();
-
-
             }
             catch (Exception)
             {
