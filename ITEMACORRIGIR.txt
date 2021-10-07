@@ -1,0 +1,5 @@
+1- valor total nao corrige quando acrescenta novas compras
+2- verificar se a soma total da compra esta certa
+3-a soma total nao esta correta
+3-quando tira um item da lista o valor total permanece o mesmo
+4-melhor o layout da aplicacao
