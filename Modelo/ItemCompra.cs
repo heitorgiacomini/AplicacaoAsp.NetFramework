@@ -16,6 +16,7 @@ namespace Modelo
         public DateTime DataExclusao { get; set; }
         public string auxDescricao { get; set; }
         public decimal auxValor { get; set; }
+        public decimal subTotal { get; set; }
         public decimal auxValorTotal { get { return Quantidade * auxValor; } }
         public string guid { get; set; }
     }

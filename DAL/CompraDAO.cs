@@ -56,12 +56,13 @@ namespace DAL
                         while (reader.Read())
                         {
                             Modelo.ItemCompra m = new Modelo.ItemCompra();
+                            m.Codigo = (int)reader["Codigo"];  //codigo do item    
                             m.codCompra = (int)reader["CodCompra"];
                             m.guid = Guid.NewGuid().ToString();
-                            m.Codigo = (int)reader["Codigo"];  //codigo do item    
                             m.codProduto = (int)reader["codProduto"];
                             m.auxDescricao = (string)reader["Descricao"];
                             m.auxValor = (decimal)reader["ValorUnitario"];
+                            m.subTotal = reader["SubTotal"].ToString() == "" ? m.subTotal : (decimal)reader["SubTotal"];
                             m.Quantidade = (int)reader["Quantidade"];
 
                             //m.ValorTotal = reader["ValorTotal"].ToString() != string.Empty ? (decimal)reader["ValorTotal"] : c.ValorTotal;
@@ -82,23 +83,7 @@ namespace DAL
             }
         }
 
-        public int Salvar(Modelo.Compra modelocompra)
-        {
-            try
-            {
-                SqlCommand comando = CriarComando("Insert into Compra (CodCliente, ValorTotal) values (@CodCliente, @ValorTotal); select SCOPE_IDENTITY();", System.Data.CommandType.Text);
-                //Insert into Cliente (Nome, DataNascimento, CPF, Endereco) values (@nome, @datanascimento, @cpf, @endereco)
-                comando.Parameters.AddWithValue("@CodCliente", modelocompra.CodCliente);
-                comando.Parameters.AddWithValue("@ValorTotal", modelocompra.ValorTotal);
-                int codigocompra = int.Parse(comando.ExecuteScalar().ToString());
-                comando.Connection.Close();
-                return codigocompra;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        
         public void SalvarTudo(Modelo.Compra modelocompra)
         {
             try

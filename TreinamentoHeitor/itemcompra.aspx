@@ -30,7 +30,7 @@
                         <td>auxDescricao</td>
                         <td>auxValor</td>
                         <td>Quantidade</td>
-                        <td>SubTotal</td>
+                        <td>subTotal</td>
                         <td>Excluir</td>
                     </tr>
                 </thead>
@@ -57,7 +57,7 @@
                                     <asp:TextBox ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:Label ID="lblauxValorTotal" runat="server" Text='<%# Eval("auxValorTotal")  %>' />
+                                    <asp:Label ID="lblsubTotal" runat="server" Text='<%# Eval("subTotal")  %>'></asp:Label>
                                 </td>
                                 <td>
                                     <asp:LinkButton ID="Editar" runat="server" CommandName="Editar" CommandArgument='<%#Eval("guid")  %>' >X</asp:LinkButton>
@@ -121,7 +121,7 @@
                                     <asp:Label ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:Label>
                                 </td>
                                 <td>
-                                    <asp:Label ID="lblauxValorTotal" runat="server" Text='<%# Eval("auxValorTotal")  %>'></asp:Label>
+                                    <asp:Label ID="lblauxValorTotal" runat="server" Text='<%# Eval("SubTotal")  %>'></asp:Label>
                                 </td>
                             </tr>
                         </ItemTemplate>
