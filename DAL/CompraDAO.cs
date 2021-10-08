@@ -133,7 +133,6 @@ namespace DAL
         private DataTable PreencherDataTableUpdate(List<Modelo.ItemCompra> auxItems) {
             try
             {
-
                 DataTable tabela = new DataTable();
                 tabela.Columns.Add("codItem");
                 tabela.Columns.Add("codCompra");
@@ -170,8 +169,6 @@ namespace DAL
                     tabela.Rows.Add(linha);
                 }
                 return tabela;
-                //codProduto
-                //Quantidade
             }
             catch (Exception)
             {

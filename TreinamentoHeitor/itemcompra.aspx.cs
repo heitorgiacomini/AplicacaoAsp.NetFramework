@@ -83,7 +83,7 @@ namespace TreinamentoHeitor
                     int codigo = int.Parse(e.CommandArgument.ToString());
                     Modelo.Compra comprix = new Modelo.Compra();
                     comprix.Codigo = codigo;
-                    controlecompra.DesabilitarCompra(comprix);   
+                    controlecompra.DesabilitarCompra(comprix);
                 }
 
             }
@@ -243,6 +243,7 @@ namespace TreinamentoHeitor
                     compra.Codigo = int.Parse(((Label)item.FindControl("lblCodigo")).Text);
                 }
                 compracontrole.SalvarCompra(compra);
+                
             }
             catch (Exception)
             {

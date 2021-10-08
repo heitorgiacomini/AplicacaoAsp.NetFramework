@@ -3,3 +3,6 @@
 3-a soma total nao esta correta
 3-quando tira um item da lista o valor total permanece o mesmo
 4-melhor o layout da aplicacao
+5-Mudar Mecanismo De Verificar Se compra ja existe
+6-Se A compra nao tiver item, desabilita a compra
+7-Colocar Quem Editou a compra
