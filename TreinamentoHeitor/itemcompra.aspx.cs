@@ -113,54 +113,7 @@ namespace TreinamentoHeitor
 
 
         }
-        protected void BtnAddProduto_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Modelo.ItemCompra subItem = new Modelo.ItemCompra();
-                subItem.codProduto = int.Parse(listProduto.SelectedValue);
-                subItem.auxDescricao = listProduto.SelectedItem.Text;
-                subItem.auxValor = ValorProduto(int.Parse(listProduto.SelectedValue));
-                subItem.Quantidade = int.Parse(txtqtdproduto.Text);
-                subItem.subTotal = subItem.auxValor * subItem.Quantidade;
-                subItem.guid = Guid.NewGuid().ToString();
 
-                List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
-                if (VerificaSeJaExisteNaLista(listaItemComprados, subItem))
-                {   
-                    listaItemComprados.First(x => x.codProduto == subItem.codProduto).Quantidade += subItem.Quantidade;
-
-                    //ATUALIZAR TOTAL
-                }
-                else
-                {
-                    //ATUALIZAR TOTAL
-                    listaItemComprados.Add(subItem);
-                }
-                //ATUALIZAR TOTAL
-
-                Modelo.Compra modelocompra = new Modelo.Compra();
-                foreach (RepeaterItem item in RepetidorCentral.Items)
-                {
-                    Label labelCodigo = (Label)item.FindControl("lblCodigo");
-                    modelocompra.Codigo = int.Parse(labelCodigo.Text);
-                    modelocompra.NomeCliente = ((Label)item.FindControl("lblNomeCliente")).Text;
-                    modelocompra.DataCompra = DateTime.Parse(((Label)item.FindControl("lblDataCompra")).Text);
-                    modelocompra.ValorTotal = listaItemComprados.Select(x => x.subTotal).Sum();
-                }
-
-                List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
-                modelocompra.AuxItems = listaItemComprados;
-                listacompra.Add(modelocompra);
-                RepetidorCentral.DataSource = listacompra;
-                RepetidorCentral.DataBind();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        
         private List<Modelo.ItemCompra> ObterDados()
         {
             try
@@ -191,33 +144,81 @@ namespace TreinamentoHeitor
             }
         }
 
-        protected void RepetidorItems_ItemCommand(object source, RepeaterCommandEventArgs e)
+        protected void BtnAddProduto_Click(object sender, EventArgs e)
         {
             try
             {
-                //e.CommandArgument.ToString()
-                List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
                 Modelo.ItemCompra subItem = new Modelo.ItemCompra();
-                //listaItemComprados.Add(subItem);
-                string guidproduto = e.CommandArgument.ToString();
-                subItem = listaItemComprados.Where(x => x.guid == guidproduto).FirstOrDefault();
-                listaItemComprados.Remove(subItem);
+                subItem.codProduto = int.Parse(listProduto.SelectedValue);
+                subItem.auxDescricao = listProduto.SelectedItem.Text;
+                subItem.auxValor = ValorProduto(int.Parse(listProduto.SelectedValue));
+                subItem.Quantidade = int.Parse(txtqtdproduto.Text);
+                subItem.subTotal = subItem.auxValor * subItem.Quantidade;
+                subItem.guid = Guid.NewGuid().ToString();
+
+                List<Modelo.ItemCompra> listaItemComprados = ObterDados(); // listaProdutosComprados; // = controle.BuscarTodosClientes();
+                if (VerificaSeJaExisteNaLista(listaItemComprados, subItem))
+                {
+                    listaItemComprados.First(x => x.codProduto == subItem.codProduto).Quantidade += subItem.Quantidade;
+                }
+                else
+                {
+                    listaItemComprados.Add(subItem);
+                }
 
                 Modelo.Compra modelocompra = new Modelo.Compra();
+                modelocompra.AuxItems = listaItemComprados;
+                DarBindRepetidorCentralFazSomaDoValorTotal(modelocompra);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        protected void DarBindRepetidorCentralFazSomaDoValorTotal(Modelo.Compra modelocompra)
+        {
+            try
+            {
                 foreach (RepeaterItem item in RepetidorCentral.Items)
                 {
                     Label labelCodigo = (Label)item.FindControl("lblCodigo");
                     modelocompra.Codigo = int.Parse(labelCodigo.Text);
                     modelocompra.NomeCliente = ((Label)item.FindControl("lblNomeCliente")).Text;
                     modelocompra.DataCompra = DateTime.Parse(((Label)item.FindControl("lblDataCompra")).Text);
-                }
-
+                }                
+                modelocompra.ValorTotal = modelocompra.AuxItems.Select(x => x.auxSubTotal).Sum();
+                //modelocompra.ValorTotal = modelocompra.AuxItems.Select(x => x.subTotal).Sum();
                 List<Modelo.Compra> listacompra = new List<Modelo.Compra>();
-                modelocompra.AuxItems = listaItemComprados;
-                modelocompra.ValorTotal = listaItemComprados.Select(x => x.subTotal).Sum();
                 listacompra.Add(modelocompra);
                 RepetidorCentral.DataSource = listacompra;
                 RepetidorCentral.DataBind();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+        protected void RepetidorItems_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            try
+            {               
+                List<Modelo.ItemCompra> listaItemComprados = ObterDados();
+                Modelo.ItemCompra subItem = new Modelo.ItemCompra();
+                
+                string guidproduto = e.CommandArgument.ToString();
+                subItem = listaItemComprados.Where(x => x.guid == guidproduto).FirstOrDefault();
+                listaItemComprados.Remove(subItem);
+
+                Modelo.Compra modelocompra = new Modelo.Compra();
+                
+                modelocompra.AuxItems = listaItemComprados;
+
+                DarBindRepetidorCentralFazSomaDoValorTotal(modelocompra);
+                //listacompra.Add(modelocompra);
+                //RepetidorCentral.DataSource = listacompra;
+                //RepetidorCentral.DataBind();
             }
             catch (Exception)
             {
