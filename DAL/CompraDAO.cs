@@ -134,17 +134,19 @@ namespace DAL
             try
             {
                 DataTable tabela = new DataTable();
-                tabela.Columns.Add("codItem");
-                tabela.Columns.Add("codCompra");
-                tabela.Columns.Add("codProduto");
-                tabela.Columns.Add("Quantidade");
+                tabela.Columns.Add("codItem", typeof(int));
+                tabela.Columns.Add("codCompra", typeof(int));
+                tabela.Columns.Add("codProduto", typeof(int));
+                tabela.Columns.Add("Quantidade", typeof(int));
+                tabela.Columns.Add("ValorUnitario", typeof(decimal));
                 foreach (Modelo.ItemCompra item in auxItems)
                 {
                     DataRow linha = tabela.NewRow();
-                    linha["codItem"] = item.Codigo;
+                    linha["codItem"] = int.Parse(item.Codigo.ToString());
                     linha["codCompra"] = item.codCompra;
                     linha["codProduto"] = item.codProduto;
                     linha["Quantidade"] = item.Quantidade;
+                    linha["ValorUnitario"] = item.auxValor;
                     tabela.Rows.Add(linha);
                 }
                 return tabela;
