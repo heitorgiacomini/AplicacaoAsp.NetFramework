@@ -11,12 +11,12 @@ namespace Modelo
         public int Codigo { get; set; }
         public int codProduto { get; set; }
         public int codCompra { get; set; }
-        public int Quantidade { get; set; }
+        public long Quantidade { get; set; }
         public bool Excluido { get; set; }
+        public decimal subTotal { get; set; }
         public DateTime DataExclusao { get; set; }
         public string auxDescricao { get; set; }
         public decimal auxValor { get; set; }
-        public decimal subTotal { get; set; }
         public decimal auxSubTotal { get { return Quantidade * auxValor; } }
         public string guid { get; set; }
     }

@@ -59,7 +59,8 @@
                                             <asp:TextBox ID="lblQuantidade" runat="server" Text='<%# Eval("Quantidade")  %>'></asp:TextBox>
                                         </td>
                                         <td>
-                                            <asp:Label ID="lblsubTotal" runat="server" Text='<%# Eval("AuxSubTotal")  %>'></asp:Label>
+                                            <asp:Label ID="lblsubTotal" runat="server" Text='<%# Eval("subTotal")  %>'></asp:Label>
+                                            <%--<asp:Label ID="lblsubTotal" runat="server" Text='<%# Eval("AuxSubTotal")  %>'></asp:Label>--%>
                                         </td>
                                         <td>
                                             <asp:LinkButton ID="Editar" runat="server" CommandName="Editar" CommandArgument='<%#Eval("guid")  %>'>X</asp:LinkButton>
