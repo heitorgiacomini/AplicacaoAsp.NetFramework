@@ -1,0 +1,305 @@
+using Cetec.Banco;
+using Entidade.Comum;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using Cetec.Banco.Uteis;
+
+namespace DAO.Comum
+{
+    public class TabelaDAO : Conexao
+    {
+        public List<Tabela> PesquisarTabelasPelaView(String codigocliente)
+        {
+            try
+            {
+
+                /*O sqlpesquisapelobancointeiro faz a pesquisa por toda o schema pesquisando oor todas as tabelas onde 
+                 o codcliente é igual ao enviado. o sqll eh bem melhor que o sql, porem ele 
+                demora muito para retornar o resultado*/
+                string sqlretornanomedaview = @"SELECT* FROM imobiliario.apesquisanomedaviewdacamada(@CodigoCliente)";
+
+                List<DbParameter> parametros = new List<DbParameter>();
+                List<Tabela> listatabelas = new List<Tabela>();
+                parametros.Add(repositorio.CriarParametro("CodigoCliente", DbType.String, codigocliente));
+
+
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sqlretornanomedaview, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    while (reader.Read())
+                    {
+                        Tabela tabela = new Tabela();
+                        tabela.NomeTabela = reader.GetValue<String>("tabela");
+                        tabela.ApelidoTabela = reader.GetValue<String>("apelidotabela");
+                        listatabelas.Add(tabela);
+                    }
+                }
+                return listatabelas;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<Tabela> PesquisarTabelasPeloLayerName(String codigocliente)
+        {
+            try
+            {
+
+                /*O sqlpesquisapelobancointeiro faz a pesquisa por toda o schema pesquisando oor todas as tabelas onde 
+                 o codcliente é igual ao enviado. o sqll eh bem melhor que o sql, porem ele 
+                demora muito para retornar o resultado*/
+
+                string sqlretornanometabelalayername = @"SELECT* FROM imobiliario.apesquisanometabelacamadapelolayername(@CodigoCliente)";
+                List<DbParameter> parametros = new List<DbParameter>();
+                List<Tabela> listatabelas = new List<Tabela>();
+                parametros.Add(repositorio.CriarParametro("CodigoCliente", DbType.String, codigocliente));
+
+
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sqlretornanometabelalayername, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    while (reader.Read())
+                    {
+                        Tabela tabela = new Tabela();
+                        tabela.NomeTabela = reader.GetValue<String>("tabela");
+                        tabela.ApelidoTabela = tabela.NomeTabela;
+                        listatabelas.Add(tabela);
+                    }
+                }
+                return listatabelas;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<Tabela> PesquisarTabelasPeloBancoTodo(String codigocliente)
+        {
+            try
+            {
+
+                /*O sqlpesquisapelobancointeiro faz a pesquisa por toda o schema pesquisando oor todas as tabelas onde 
+                 o codcliente é igual ao enviado. o sqll eh bem melhor que o sql, porem ele 
+                demora muito para retornar o resultado*/
+                string sqlpesquisapelobancointeiro = @"SELECT tablename FROM aasearch_columns(@CodigoCliente)";
+
+
+                List<DbParameter> parametros = new List<DbParameter>();
+                List<Tabela> listatabelas = new List<Tabela>();
+                parametros.Add(repositorio.CriarParametro("CodigoCliente", DbType.String, codigocliente));
+
+
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sqlpesquisapelobancointeiro, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    while (reader.Read())
+                    {
+                        Tabela tabela = new Tabela();
+                        tabela.NomeTabela = reader.GetValue<String>("tablename");
+                        tabela.ApelidoTabela = tabela.NomeTabela;
+                        listatabelas.Add(tabela);
+                    }
+                }
+                return listatabelas;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public Tabela PesquisarColunas(Tabela tabela)
+        {
+            try
+            {
+
+                string sql = @"select column_name as coluna from information_schema.columns WHERE table_name = @Nometabela 
+                    AND table_schema = 'imobiliario'";
+                List<DbParameter> parametros = new List<DbParameter>();
+                parametros.Add(repositorio.CriarParametro("Nometabela", DbType.String, tabela.ApelidoTabela));
+
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sql, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    while (reader.Read())
+                    {
+                        Coluna coluna = new Coluna();
+                        coluna.Nome = reader.GetValue<String>("coluna");
+                        tabela.Coluna.Add(coluna);
+                    }
+                }
+                return tabela;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        String ConcatenaListaNofinalDaString(String primeiraparte, List<String> listacolunas)
+        {
+            string stringcolunas = String.Join(", ", listacolunas);
+            return primeiraparte + " " + stringcolunas + " ";
+        }
+        public List<Dictionary<string, string>> PesquisaCamposCustomizadosEmTabela(List<String> listcolunas, Tabela tabela, String pesquisa)
+        {
+            try
+            {
+                // @"select  from @Nometabela WHERE @Coluna = @Pesquisa";
+                string sql = ConcatenaListaNofinalDaString("select ", listcolunas);
+                sql += " FROM imobiliario." + tabela.NomeTabela;
+                sql += " WHERE " + tabela.Coluna[0].Nome + "::text = ";
+                sql += " @Pesquisa";
+                List<DbParameter> parametros = new List<DbParameter>();
+                parametros.Add(repositorio.CriarParametro("Pesquisa", DbType.String, pesquisa));
+
+                List<Dictionary<string, string>> registros = new List<Dictionary<string, string>>();
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sql, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    Dictionary<string, string> linhadoregisto = new Dictionary<string, string>();
+                    while (reader.Read())
+                    {
+                        int posicao = 0;
+                        foreach (String campo in listcolunas)
+                        {
+                            var valor = reader.GetValue(posicao);
+                            linhadoregisto.Add(campo, valor.ToString());
+                            posicao++;
+                        }
+                        registros.Add(linhadoregisto);
+                        linhadoregisto = new Dictionary<string, string>();
+                    }
+                }
+                return registros;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<LinhaRegistro> PesquisaCamposCustomizadosPelaTabela(List<String> listcolunas, Tabela tabela, String pesquisa)
+        {
+            try
+            {
+
+                // @"select  from @Nometabela WHERE @Coluna = @Pesquisa";
+                string sql = ConcatenaListaNofinalDaString("select ", listcolunas);
+                sql += " FROM imobiliario." + tabela.NomeTabela;
+                sql += " WHERE " + tabela.Coluna[0].Nome + "::text = ";
+                sql += " @Pesquisa";
+                List<DbParameter> parametros = new List<DbParameter>();
+                parametros.Add(repositorio.CriarParametro("Pesquisa", DbType.String, pesquisa));
+
+                List<LinhaRegistro> linhasderegistros = new List<LinhaRegistro>();
+
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sql, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {                    
+                    LinhaRegistro linharegistro = new LinhaRegistro();
+                    while (reader.Read())
+                    {
+                        int posicao = 0;
+                        linharegistro.Identificador = reader.GetValue(posicao).ToString();
+                        foreach (String campo in listcolunas)
+                        {
+                            var valor = reader.GetValue(posicao);
+                            linharegistro.Registro.Add(
+                                new ChaveValor { Chave = campo, Valor = valor.ToString() }
+                            );
+                            posicao++;
+                        }
+                        linhasderegistros.Add(linharegistro);
+                        linharegistro = new LinhaRegistro();
+                    }
+                }
+                return linhasderegistros;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<LinhaRegistro> PesquisaCamposCustomizadosPelaView(List<String> listcolunas, Tabela tabela, String pesquisa)
+        {
+            try
+            {
+
+                // @"select  from @Nometabela WHERE @Coluna = @Pesquisa";
+                string sql = ConcatenaListaNofinalDaString("select ", listcolunas);
+                sql += " FROM imobiliario." + tabela.NomeTabela;
+                sql += " WHERE " + tabela.Coluna[0].Nome + "::text = ";
+                sql += " @Pesquisa";
+                List<DbParameter> parametros = new List<DbParameter>();
+                parametros.Add(repositorio.CriarParametro("Pesquisa", DbType.String, pesquisa));
+
+                List<LinhaRegistro> linhasderegistros = new List<LinhaRegistro>();
+
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sql, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    LinhaRegistro linharegistro = new LinhaRegistro();
+                    while (reader.Read())
+                    {
+                        int posicao = 0;
+                        linharegistro.Identificador = reader.GetValue(posicao).ToString();
+                        foreach (String campo in listcolunas)
+                        {
+                            var valor = reader.GetValue(posicao);
+                            linharegistro.Registro.Add(
+                                new ChaveValor { Chave = campo, Valor = valor.ToString() }
+                            );
+                            posicao++;
+                        }
+                        linhasderegistros.Add(linharegistro);
+                        linharegistro = new LinhaRegistro();
+                    }
+                }
+                return linhasderegistros;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
+        public List<Dictionary<string, string>> PesquisaCamposCustomizadosEmUmaView(List<String> listcolunas, Tabela tabela, String pesquisa)
+        {
+            try
+            {
+                // @"select  from @Nometabela WHERE @Coluna = @Pesquisa";
+                string @sql = ConcatenaListaNofinalDaString("select ", listcolunas);
+                @sql += " FROM " + tabela.NomeTabela;
+                @sql += " WHERE " + tabela.Coluna[0].Nome + " = ";
+                @sql += " @Pesquisa";
+                List<DbParameter> parametros = new List<DbParameter>();
+                parametros.Add(repositorio.CriarParametro("Pesquisa", DbType.Object, pesquisa));
+
+
+                List<Dictionary<string, string>> registros = new List<Dictionary<string, string>>();
+                using (DbDataReader reader = (DbDataReader)repositorio.ExecutarCommando(sql, CommandType.Text, parametros, TipoComando.ExecuteReader))
+                {
+                    Dictionary<string, string> linhadoregisto = new Dictionary<string, string>();
+                    while (reader.Read())
+                    {
+                        foreach (String campo in listcolunas)
+                        {
+
+                            linhadoregisto.Add(campo, reader.GetValue<String>(campo));
+                        }
+                        registros.Add(linhadoregisto);
+                        linhadoregisto = new Dictionary<string, string>();
+                    }
+                }
+                return registros;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<Dictionary<string, string>> PesquisaCamposCustomizadosEmUmaView(List<String> campos, Tabela tabela, String coluna, String pesquisa)
+        {
+            return new List<Dictionary<string, string>>();
+        }
+
+
+    }
+}
